@@ -126,13 +126,11 @@ class SuperPointNet(torch.nn.Module):
 
 class SuperPointFrontend(object):
   """ Wrapper around pytorch net to help with pre and post image processing. """
-  def __init__(self, weights_path, nms_dist, conf_thresh, nn_thresh,
-               cuda=False):
+  def __init__(self, weights_path, nms_dist, conf_thresh, cuda=False):
     self.name = 'SuperPoint'
     self.cuda = cuda
     self.nms_dist = nms_dist
     self.conf_thresh = conf_thresh
-    self.nn_thresh = nn_thresh # L2 descriptor distance for good match.
     self.cell = 8 # Size of each output cell. Keep this fixed.
     self.border_remove = 4 # Remove points this close to the border.
 
@@ -359,8 +357,6 @@ if __name__ == '__main__':
       help='Non Maximum Suppression (NMS) distance (default: 4).')
   parser.add_argument('--conf_thresh', type=float, default=0.015,
       help='Detector confidence threshold (default: 0.015).')
-  parser.add_argument('--nn_thresh', type=float, default=0.7,
-      help='Descriptor matching threshold (default: 0.7).')
   parser.add_argument('--output_extension', type=str, default='.superpoint',
       help='Output npz extension (default: \'image.image_extension.superpoint\')')
   parser.add_argument('--no_cuda', dest='cuda', action='store_false',
@@ -377,7 +373,6 @@ if __name__ == '__main__':
   fe = SuperPointFrontend(weights_path=opt.weights_path,
                           nms_dist=opt.nms_dist,
                           conf_thresh=opt.conf_thresh,
-                          nn_thresh=opt.nn_thresh,
                           cuda=opt.cuda)
   print('==> Successfully loaded pre-trained network.')
 
