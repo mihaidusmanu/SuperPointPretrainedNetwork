@@ -276,7 +276,7 @@ class SuperPointFrontend(object):
       samp_pts = samp_pts.float()
       if self.cuda:
         samp_pts = samp_pts.cuda()
-      desc = torch.nn.functional.grid_sample(coarse_desc, samp_pts)
+      desc = torch.nn.functional.grid_sample(coarse_desc, samp_pts, align_corners=True)
       desc = desc.data.cpu().numpy().reshape(D, -1)
       desc /= np.linalg.norm(desc, axis=0)[np.newaxis, :]
     return pts, desc, heatmap
